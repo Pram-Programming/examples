@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Hello!</h1>
+        <canvas id="canvas" width=500 height=500></canvas>
+        <script>
+            const canvas = document.querySelector('#canvas')
+            const ctx = canvas.getContext('2d')
+            
+            CanvasRenderingContext2D.prototype.fillCircle = function (x, y, r) {
+                ctx.beginPath()
+                ctx.arc(x, y, r, 0, 2 * Math.PI)
+                ctx.fill()
+                ctx.closePath()
+            }
+            
+            let x = 250, y = 250, key_status = []
+            
+            setInterval(() => {
+                if (key_status[87] === true) y -= 2 // w
+                if (key_status[65] === true) x -= 2 // a
+                if (key_status[83] === true) y += 2 // s
+                if (key_status[68] === true) x += 2 // d
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                ctx.fillCircle(x, y, 20)
+            }, 10)
+            
+            document.addEventListener('keydown', evt => {
+                key_status[evt.keyCode] = true
+            })
+            
+            document.addEventListener('keyup', evt => {
+                key_status[evt.keyCode] = false
+            })
+        </script>
+    </body>
+</html>

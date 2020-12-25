@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <canvas id="canvas" width=1000 height=500></canvas>
+        <script>
+            const canvas = document.querySelector('#canvas')
+            const ctx = canvas.getContext('2d')
+            
+            CanvasRenderingContext2D.prototype.fillCircle = function (x, y, r) {
+                ctx.beginPath()
+                ctx.arc(x, y, r, 0, 2 * Math.PI)
+                ctx.fill()
+                ctx.closePath()
+            }
+            
+            function isCollision(x1, y1, r1, x2, y2, r2) {
+                let dist = Math.sqrt(Math.pow(Math.abs(x1 - x2), 2) + Math.pow(Math.abs(y1 - y2), 2))
+                return dist <= r1 + r2
+            }
+            
+            let x = 100, y = 250, tick = 0, key_status = [], obs = { x: 500, y: 250, r: 20 }
+            
+            setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height)
+                
+                if (key_status[87] === true) y -= 2 // w
+                if (key_status[65] === true) x -= 2 // a
+                if (key_status[83] === true) y += 2 // s
+                if (key_status[68] === true) x += 2 // d
+                
+                obs.x = Math.sin(tick / 50) * 100 + 500
+                obs.y = Math.cos(tick / 50) * 100 + 250
+                
+                ctx.fillStyle = '#ff0000'
+                ctx.fillCircle(obs.x, obs.y, obs.r)
+                
+                if (isCollision(x, y, 20, obs.x, obs.y, obs.r)) {
+                    x = 100
+                    y = 250
+                }
+                
+                ctx.fillStyle = '#000000'
+                ctx.fillCircle(x, y, 20)
+                
+                tick += 1
+            }, 10)
+            
+            document.addEventListener('keydown', evt => {
+                key_status[evt.keyCode] = true
+            })
+            
+            document.addEventListener('keyup', evt => {
+                key_status[evt.keyCode] = false
+            })
+        </script>
+    </body>
+</html>

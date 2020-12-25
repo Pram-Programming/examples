@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Hello!</h1>
+        <canvas id="canvas" width=500 height=500></canvas>
+        <script>
+            const canvas = document.querySelector('#canvas')
+            const ctx = canvas.getContext('2d')
+            
+            CanvasRenderingContext2D.prototype.fillCircle = function (x, y, r) {
+                ctx.beginPath()
+                ctx.arc(x, y, r, 0, 2 * Math.PI)
+                ctx.fill()
+                ctx.closePath()
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                let x = Math.random() * 500
+                let y = Math.random() * 500
+                let r = Math.random() * 30
+                
+                ctx.fillCircle(x, y, r)
+            }
+        </script>
+    </body>
+</html>
